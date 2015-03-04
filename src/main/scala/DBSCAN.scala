@@ -19,10 +19,10 @@ object DBSCAN {
   def main(args:Array[String])
   {
     //dataset path
-    val datasetFile = "/home/ywy/TestSpark/kmeans_data.txt"
+    val datasetFile = "dbscan_data.txt"
     //debugfile path
-    val debugFile = "/home/ywy/TestSpark/debugFile"
-    val debugFile2 = "/home/ywy/TestSpark/debugFile2"
+    val debugFile = "debugFile"
+    val debugFile2 = "debugFile2"
     //
     val eps = 2.0
     //
