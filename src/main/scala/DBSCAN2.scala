@@ -29,13 +29,8 @@ object DBSCAN {
   def main(args:Array[String])
   {
     //dataset path
-    //val datasetFile = "hdfs://dbblade01.prakinf.tu-ilmenau.de:/user/weya2168/SpatialTemporalData1.txt"
-    //val datasetFile = "hdfs://dbblade01.prakinf.tu-ilmenau.de:/user/weya2168/kmeans_data.txt"
-    val datasetFile = "/home/ywy/LocalTestSpark/SpatialTemporalData1.txt"
-    //debugfile path
-    //val debugFile = "hdfs://dbblade01.prakinf.tu-ilmenau.de:/user/weya2168/debug_data.txt"
-    val debugFile = "/home/ywy/LocalTestSpark/debugFile"
-    val debugFile2 = "/home/ywy/LocalTestSpark/debugFile2"
+    val datasetFile = "SpatialTemporalData1.txt"
+    //debugfile
     //
     val eps = 5.0
     //
@@ -47,9 +42,6 @@ object DBSCAN {
     val sc = new SparkContext(conf)
   
     val lines = sc.textFile(datasetFile)
-    //
-    //val distinctLine = lines.distinct()
-    //distinctLine.saveAsTextFile(debugFile2)
     //convert to double and vector
     val points = lines.map(parseVector).cache()
     //generate distance matrix
