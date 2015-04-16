@@ -34,8 +34,6 @@ object DBSCAN {
    
     val sc = new SparkContext(conf)
     val lines = sc.textFile(datasetFile)
-    val count = lines.count() // lines is the rdd
-    val partitionLinesCount = count / lines.partitions.length
     val linesWithIndex = lines.map(generateIndex).map{x=>(x.head.toLong,x.last)}
     //linesWithIndex.saveAsTextFile(debugFile)
     
@@ -44,12 +42,11 @@ object DBSCAN {
     //convert to double and vector
     
     val points = linesWithIndex.map{case(x,y)=>(x,parseVector(y))}.cache()
-    points.saveAsTextFile(debugFile)
     //generate distance matrix
     val distanceBetweenPoints = points.cartesian(points)
     .filter{case(x,y) => (x!=y)}
-    
-    val distanceFilter=distanceBetweenPoints.map{case((idx,x),(idy,y)) => ((idx,idy),squaredDistance(x,y))}
+    val distanceFilter=distanceBetweenPoints
+    .map{case((idx,x),(idy,y)) => ((idx,idy),squaredDistance(x,y))}
     //with the eps
     val pointsWithinEps = distanceFilter
     .filter{case ((x,y),distance) => (distance <= eps)}.cache()
@@ -58,18 +55,15 @@ object DBSCAN {
     val testPoints = pointsWithinEps
     .map{case((x,y),distance)=>(x,y)}
     
-    val pointsCount = testPoints.map{case(x,y)=>(x,1)}.reduceByKey((a,b)=> a+b)
-    val filterPointsCount = pointsCount.filter{case(x,y)=> (y>=minPnts)}
+    val pointsCount = testPoints.map{case(x,y)=>(x,1)}
+    .reduceByKey((a,b)=> a+b)
+    val filterPointsCount = pointsCount
+    .filter{case(x,y)=> (y>=minPnts)}
     //filterPointsCount.saveAsTextFile(debugFile)
-    val filterPoints = testPoints.join(filterPointsCount).map{case(k,(v,w)) => (k,v)}
-    //val pointsCount = testPoints.countByKey()
+    val filterPoints = testPoints.join(filterPointsCount)
+    .map{case(k,(v,w)) => (k,v)}
     //
-    //val filterPoints = testPoints.filter{case(x,y)=>checkDegree(x,pointsCount,minPnts)}
-    filterPoints.saveAsTextFile(debugFile2)
-    //val pointPairs = filterPoints.flatMap{case(K,v)=>(K)}
-   
     //pointPairs.saveAsTextFile(debugFile2)
-    
     
     val vertices = points.map{case(x,y)=>(x,y.toString())}.cache  
     
