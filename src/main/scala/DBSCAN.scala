@@ -23,7 +23,6 @@ object DBSCAN {
     //debugfile path
     val debugFile = "debugFile"
     val debugFile2 = "debugFile2"
-    //
     val eps = 2.0
     //
     val minPnts = 5
