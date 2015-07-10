@@ -38,7 +38,6 @@ object DBSCAN {
     //linesWithIndex.saveAsTextFile(debugFile)
     
     //get index and denseVector
-    
     //convert to double and vector
     
     val points = linesWithIndex.map{case(x,y)=>(x,parseVector(y))}.cache()
