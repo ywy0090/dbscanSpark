@@ -29,7 +29,7 @@ object DBSCAN {
   def main(args:Array[String])
   {
     //dataset path
-    val datasetFile = "SpatialTemporalData1.txt"
+    val datasetFile = ""
     //debugfile
     //
     val eps = 5.0
