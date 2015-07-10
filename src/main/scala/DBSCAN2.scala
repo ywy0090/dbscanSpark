@@ -31,7 +31,6 @@ object DBSCAN {
     //dataset path
     val datasetFile = ""
     //debugfile
-    //
     val eps = 5.0
     //
     val minPnts = 5
